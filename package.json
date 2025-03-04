@@ -1,0 +1,15 @@
+{
+  "name": "music-commit",
+  "version": "1.0.0",
+  "main": "index.js",
+  "bin": {
+    "music-commit": "./cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Append music info to Git commit messages"
+}
