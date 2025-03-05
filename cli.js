@@ -9,30 +9,23 @@ if (!args.length) {
 }
 
 // Extract commit message from arguments
-const commitMessage = args.join(" ");
+let commitMessage = args.join(" "); // Changed from `const` to `let`
 
-// Fake music data for now
-const fakeSong = "🎵 The Rolling Stones - Star Star";
+// Fake music data for now (this will be replaced with real music fetching)
+const fakeSong = "🎵 Placeholder Artist - Placeholder Song";
 
-// Replace {{ADD MUSIC}} with actual music info
-const finalMessage = commitMessage.replace("{{ADD MUSIC}}", fakeSong);
+// Check if the commit message contains {{ADD MUSIC}}
+if (commitMessage.includes("{{ADD MUSIC}}")) {
+  commitMessage = commitMessage.replace("{{ADD MUSIC}}", fakeSong);
+} else {
+  console.log("⚠️ No {{ADD MUSIC}} found. Adding music automatically...");
+  commitMessage += ` ${fakeSong}`;
+}
 
 // Run git commit
 try {
-  execSync(`git commit -m "${finalMessage}"`, { stdio: "inherit" });
+  execSync(`git commit -m "${commitMessage}"`, { stdio: "inherit" });
 } catch (error) {
   console.error("❌ Error running git commit. Are you inside a Git repo?");
   process.exit(1);
 }
-
-// const args = process.argv.slice(2);
-// if (!args.length) {
-//   console.log("Usage: music-commit 'Your commit message {{ADD MUSIC}}'");
-//   process.exit(1);
-// }
-
-// const commitMessage = args.join(" ");
-// const fakeSong = "🎵 Placeholder Artist - Placeholder Song"; // Static text for now
-// const finalMessage = commitMessage.replace("{{ADD MUSIC}}", fakeSong);
-
-// console.log(`Final Commit Message: "${finalMessage}"`);
