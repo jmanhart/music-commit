@@ -12,7 +12,7 @@ if (!args.length) {
 let commitMessage = args.join(" "); // Changed from `const` to `let`
 
 // Fake music data for now (this will be replaced with real music fetching)
-const fakeSong = "🎵 Placeholder Artist - Placeholder Song";
+const fakeSong = "🎵 The Rolling Stones - Jumpin Jack Flash";
 
 // Check if the commit message contains {{ADD MUSIC}}
 if (commitMessage.includes("{{ADD MUSIC}}")) {
