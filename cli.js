@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-const { execSync } = require("child_process");
+import chalk from "chalk";
+import { execSync } from "child_process";
 
 // Sample List of Fake Songs
 const fakeSongs = [
@@ -22,7 +23,9 @@ const getRandomSong = () =>
 
 const args = process.argv.slice(2);
 if (!args.length) {
-  console.error("Usage: music-commit 'Your commit message {{ADD MUSIC}}'");
+  console.error(
+    chalk.gray("Usage: music-commit 'Your commit message {{ADD MUSIC}}'")
+  );
   process.exit(1);
 }
 
@@ -34,16 +37,26 @@ const randomSong = getRandomSong();
 
 // Check if the commit message contains {{ADD MUSIC}}
 if (commitMessage.includes("{{ADD MUSIC}}")) {
-  commitMessage = commitMessage.replace("{{ADD MUSIC}}", randomSong);
+  commitMessage = commitMessage.replace(
+    "{{ADD MUSIC}}",
+    chalk.green(randomSong)
+  );
 } else {
   console.log("⚠️ No {{ADD MUSIC}} found. Adding music automatically...");
-  commitMessage += ` ${randomSong}`;
+  commitMessage += ` ${chalk.green.randomSong}`;
 }
+
+// Show final commit previe
+console.log(chalk.blue.bold("\n📝 Final Commit Message:"));
+console.log(chalk.cyan(`"${commitMessage}"\n`));
 
 // Run git commit
 try {
   execSync(`git commit -m "${commitMessage}"`, { stdio: "inherit" });
 } catch (error) {
-  console.error("❌ Error running git commit. Are you inside a Git repo?");
+  console.error(
+    chalk.red.bold("❌ Error running git commit.") +
+      " Are you inside a Git repo?"
+  );
   process.exit(1);
 }

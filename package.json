@@ -1,6 +1,7 @@
 {
   "name": "music-commit",
-  "version": "1.0.0",
+  "version": "0.1.0",
+  "type": "module",
   "main": "index.js",
   "bin": {
     "music-commit": "./cli.js"
@@ -11,5 +12,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "Append music info to Git commit messages"
+  "description": "Append music info to Git commit messages",
+  "dependencies": {
+    "chalk": "^5.4.1"
+  }
 }
