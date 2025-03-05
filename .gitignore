@@ -1,0 +1,25 @@
+# Node.js dependencies
+node_modules/
+package-lock.json
+
+# Build files (if applicable)
+dist/
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# npm global symlink (from `npm link`)
+npm-debug.log*
+logs/
+debug.log
+yarn.lock
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+
+# macOS system files
+*.DS_Store
