@@ -3,7 +3,7 @@
 import chalk from "chalk";
 import { execSync } from "child_process";
 
-// Sample List of Fake Songs
+// Sample list of fake songs
 const fakeSongs = [
   "🎵 Daft Punk - Harder, Better, Faster, Stronger",
   "🎵 The Beatles - Hey Jude",
@@ -23,7 +23,8 @@ const getRandomSong = () =>
 
 const args = process.argv.slice(2);
 if (!args.length) {
-  console.error(
+  console.error(chalk.red.bold("❌ Error:") + " No commit message provided!");
+  console.log(
     chalk.gray("Usage: music-commit 'Your commit message {{ADD MUSIC}}'")
   );
   process.exit(1);
@@ -32,7 +33,7 @@ if (!args.length) {
 // Extract commit message from arguments
 let commitMessage = args.join(" ");
 
-// Get Random Song
+// Get a random song
 const randomSong = getRandomSong();
 
 // Check if the commit message contains {{ADD MUSIC}}
@@ -42,11 +43,15 @@ if (commitMessage.includes("{{ADD MUSIC}}")) {
     chalk.green(randomSong)
   );
 } else {
-  console.log("⚠️ No {{ADD MUSIC}} found. Adding music automatically...");
-  commitMessage += ` ${chalk.green.randomSong}`;
+  console.log(
+    chalk.yellow.bold(
+      "⚠️ No {{ADD MUSIC}} found! Adding a random song automatically..."
+    )
+  );
+  commitMessage += ` ${chalk.green(randomSong)}`;
 }
 
-// Show final commit previe
+// Show final commit preview
 console.log(chalk.blue.bold("\n📝 Final Commit Message:"));
 console.log(chalk.cyan(`"${commitMessage}"\n`));
 
