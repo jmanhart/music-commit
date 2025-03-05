@@ -12,7 +12,7 @@ if (!args.length) {
 const commitMessage = args.join(" ");
 
 // Fake music data for now
-const fakeSong = "🎵 Placeholder Artist - Placeholder Song";
+const fakeSong = "🎵 The Rolling Stones - Star Star";
 
 // Replace {{ADD MUSIC}} with actual music info
 const finalMessage = commitMessage.replace("{{ADD MUSIC}}", fakeSong);
