@@ -2,6 +2,7 @@
 
 import chalk from "chalk";
 import { execSync } from "child_process";
+import { handleFlags } from "./flags.js";
 
 // Sample list of fake songs
 const fakeSongs = [
@@ -22,6 +23,9 @@ const getRandomSong = () =>
   fakeSongs[Math.floor(Math.random() * fakeSongs.length)];
 
 const args = process.argv.slice(2);
+
+handleFlags(args);
+
 if (!args.length) {
   console.error(chalk.red.bold("❌ Error:") + " No commit message provided!");
   console.log(
