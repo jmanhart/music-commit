@@ -9,8 +9,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "git",
+    "commit",
+    "music",
+    "cli",
+    "spotify"
+  ],
+  "author": "John Manhart <manhartjohn@gmail.com>",
   "license": "ISC",
   "description": "Append music info to Git commit messages",
   "dependencies": {
