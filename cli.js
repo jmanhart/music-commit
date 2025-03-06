@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import chalk from "chalk";
+import stripAnsi from "strip-ansi";
 import { execSync } from "child_process";
 import { handleFlags } from "./flags.js";
 
@@ -55,13 +56,16 @@ if (commitMessage.includes("{{ADD MUSIC}}")) {
   commitMessage += ` ${chalk.green(randomSong)}`;
 }
 
-// Show final commit preview
-console.log(chalk.blue.bold("\n📝 Final Commit Message:"));
-console.log(chalk.cyan(`"${commitMessage}"\n`));
+// **Strip ANSI colors before committing**
+const cleanCommitMessage = stripAnsi(commitMessage);
 
-// Run git commit
+// Show final commit preview with colors (but commit a clean message)
+console.log(chalk.blue.bold("\n📝 Final Commit Message:"));
+console.log(chalk.cyan(`"${cleanCommitMessage}"\n`));
+
+// Run git commit with stripped message
 try {
-  execSync(`git commit -m "${commitMessage}"`, { stdio: "inherit" });
+  execSync(`git commit -m "${cleanCommitMessage}"`, { stdio: "inherit" });
 } catch (error) {
   console.error(
     chalk.red.bold("❌ Error running git commit.") +
