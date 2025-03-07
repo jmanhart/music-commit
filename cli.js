@@ -4,6 +4,7 @@ import chalk from "chalk";
 import stripAnsi from "strip-ansi";
 import { execSync } from "child_process";
 import { handleFlags } from "./flags.js";
+import { select, text, confirm } from "@clack/prompts";
 
 // Sample list of fake songs
 const fakeSongs = [
@@ -19,12 +20,15 @@ const fakeSongs = [
   "🎵 The Rolling Stones - Paint It Black",
 ];
 
-// Function to pick a random song
-const getRandomSong = () =>
-  fakeSongs[Math.floor(Math.random() * fakeSongs.length)];
+// Function to select a song
+async function getUserSelectedSong() {
+  return await select({
+    message: "🎵 Choose a song to attach to your commit:",
+    options: fakeSongs.map((song) => ({ value: song, label: song })),
+  });
+}
 
 const args = process.argv.slice(2);
-
 handleFlags(args);
 
 if (!args.length) {
@@ -38,32 +42,51 @@ if (!args.length) {
 // Extract commit message from arguments
 let commitMessage = args.join(" ");
 
-// Get a random song
-const randomSong = getRandomSong();
+// Ask user if they want to add a song
+const addSong = await confirm({ message: "Do you want to add a song?" });
 
-// Check if the commit message contains {{ADD MUSIC}}
-if (commitMessage.includes("{{ADD MUSIC}}")) {
+let selectedSong = "";
+
+if (addSong) {
+  const songChoice = await select({
+    message: "🎵 How do you want to add a song?",
+    options: [
+      { value: "choose", label: "Select from list" },
+      { value: "manual", label: "Type a song manually" },
+      { value: "none", label: "Skip" },
+    ],
+  });
+
+  if (songChoice === "choose") {
+    selectedSong = await getUserSelectedSong();
+  } else if (songChoice === "manual") {
+    selectedSong = await text({ message: "Type your song:" });
+  }
+}
+
+// If the commit message contains {{ADD MUSIC}}, replace it
+if (commitMessage.includes("{{ADD MUSIC}}") && selectedSong) {
   commitMessage = commitMessage.replace(
     "{{ADD MUSIC}}",
-    chalk.green(randomSong)
+    chalk.green(selectedSong)
   );
-} else {
+} else if (selectedSong) {
   console.log(
     chalk.yellow.bold(
-      "⚠️ No {{ADD MUSIC}} found! Adding a random song automatically..."
+      "⚠️ No {{ADD MUSIC}} found! Adding a song automatically..."
     )
   );
-  commitMessage += ` ${chalk.green(randomSong)}`;
+  commitMessage += ` ${chalk.green(selectedSong)}`;
 }
 
 // **Strip ANSI colors before committing**
 const cleanCommitMessage = stripAnsi(commitMessage);
 
-// Show final commit preview with colors (but commit a clean message)
+// Show final commit preview
 console.log(chalk.blue.bold("\n📝 Final Commit Message:"));
 console.log(chalk.cyan(`"${cleanCommitMessage}"\n`));
 
-// Run git commit with stripped message
+// Run git commit with the new message
 try {
   execSync(`git commit -m "${cleanCommitMessage}"`, { stdio: "inherit" });
 } catch (error) {
