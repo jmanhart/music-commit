@@ -1,4 +1,6 @@
-# 🎵 music-commit
+# 🎵 [WIP] music-commit
+
+**This is still a work in progress**
 
 `music-commit` is a CLI tool that **automatically adds the song you're listening to** in your Git commit messages.
 
